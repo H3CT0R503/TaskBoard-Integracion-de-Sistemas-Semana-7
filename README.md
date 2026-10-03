@@ -1,59 +1,103 @@
-# 🚀 Guías de Prácticas Laravel - TaskBoard: Pasarela de Pagos
+# 💳 TaskBoard — Semana 7 (Vistas Dinámicas con Blade)
 
-![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
-![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
-![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
-![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
+> Proyecto integrador de **Integración de Sistemas (CE-ISC019)** — se construye la interfaz de TaskBoard con el motor de plantillas Blade.
 
----
-
-<p align="center">
-  <img src="https://res.cloudinary.com/bcwlyire/image/upload/v1785118882/NUEVO-LOGO-UPED-A-COLOR-scaled_szoqws.jpg" alt="Logo UPED" width="300"/>
-</p>
-
-## 🏛️ Información Académica
-
-- **Institución:** Universidad Pedagógica de El Salvador *Luis Alonso Aparicio*
-- **Facultad:** Ingeniería
-- **Asignatura:** Integración de Sistemas
-- **Ciclo:** 02-2026
-- **Docente:** Ing. Oscar Contreras
-- **Proyecto Integrador:** TaskBoard - Pasarela de Pagos
+![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![Blade](https://img.shields.io/badge/Blade-Templates-F7523F?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 ---
 
-## 📌 Descripción del Proyecto
+## 📖 Descripción
 
-Este repositorio contiene el material práctico, las guías paso a paso y la estructura inicial de desarrollo para el proyecto **TaskBoard**, una plataforma de **Pasarela de Pagos** desarrollada en el framework **Laravel 11**.
-
-A través de estas guías de trabajo (Semana 5, Días 1 y 2), se abordan los conceptos fundamentales del desarrollo backend moderno:
-1. **Guía N.° 1:** Instalación del entorno, comprensión de la estructura de carpetas de Laravel, el ciclo de vida de una petición HTTP y fundamentos del enrutamiento (`routes/web.php`).
-2. **Guía N.° 2:** Rutas avanzadas (parámetros opcionales, restricciones de formato con expresiones regulares `where()`, rutas con nombre, grupos con prefijo) y la implementación del patrón MVC separando la lógica mediante **Controladores** generados con Artisan.
+En la **Semana 7**, TaskBoard deja de devolver JSON crudo y muestra la información en **vistas HTML dinámicas** usando el motor de plantillas **Blade** de Laravel. Se construye el listado de comercios y el detalle de cada comercio con sus transacciones, reutilizando un layout y un componente propios.
 
 ---
 
-## 📁 Estructura del Proyecto
+## ✨ Características
 
-A continuación se detalla la estructura principal del repositorio y del proyecto Laravel `taskboard`:
+- ✅ Mostrar datos con `{{ }}` (escapado) y `{!! !!}` (sin escapar).
+- ✅ Directivas de control: `@if`, `@foreach` y `@forelse`.
+- ✅ Layout reutilizable con `@extends`, `@section` y `@yield`.
+- ✅ Componente Blade propio: `<x-badge-estado>` para los estados de transacción.
+- ✅ Vistas de listado (`index`) y detalle (`show`) de comercios.
+
+---
+
+## 🛠️ Tecnologías
+
+| Herramienta | Uso |
+|---|---|
+| **Laravel 11.x** | Framework principal |
+| **Blade** | Motor de plantillas (vistas) |
+| **Eloquent ORM** | Datos mostrados en las vistas |
+| **MySQL** | Base de datos |
+
+---
+
+## 📋 Requisitos
+
+- PHP **8.2+**, Composer y Laravel instalados
+- Proyecto de la Semana 6 funcionando (tablas y relaciones Eloquent listas)
+
+---
+
+## ⚙️ Instalación
+
+```bash
+git clone https://github.com/H3CT0R503/NOMBRE-DEL-REPO.git
+cd NOMBRE-DEL-REPO
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
+
+---
+
+## 🕹️ Uso
+
+Con el servidor corriendo (`php artisan serve`), visita:
+
+| Ruta | Vista | Muestra |
+|---|---|---|
+| `/comercios` | `comercios/index.blade.php` | Listado de comercios afiliados |
+| `/comercios/{comercio}` | `comercios/show.blade.php` | Detalle del comercio y sus transacciones |
+
+---
+
+## 📂 Estructura (vistas)
 
 ```text
-taskboard/
-├── app/
-│   └── Http/
-│       └── Controllers/
-│           ├── ComercioController.php         # Controlador para gestión de comercios
-│           ├── TransaccionController.php      # Controlador para gestión de transacciones
-│           └── EventoTransaccionController.php# Controlador para historial y auditoría de eventos
-├── config/                                    # Archivos de configuración general del sistema
-├── database/                                  # Migraciones, factories y seeders para la base de datos
-├── public/                                    # Punto de entrada de la aplicación (index.php) y assets
-├── resources/
-│   └── views/                                 # Vistas HTML / Plantillas Blade (ej. welcome.blade.php)
-├── routes/
-│   └── web.php                                # Definición de rutas web, closures, grupos y controladores
-├── storage/                                   # Registros (logs), archivos cargados y caché de la app
-├── vendor/                                    # Dependencias de PHP administradas por Composer
-├── .env.example                               # Variables de entorno de ejemplo
-├── composer.json                              # Configuración de Composer y paquetes
-└── README.md                                  # Documentación principal del repositorio
+resources/views/
+├── layouts/
+│   └── app.blade.php            # layout base reutilizable
+├── components/
+│   └── badge-estado.blade.php   # componente <x-badge-estado>
+└── comercios/
+    ├── index.blade.php          # listado
+    └── show.blade.php           # detalle
+```
+
+---
+
+## 🧠 Conceptos aplicados
+
+- **Interpolación segura:** `{{ }}` escapa HTML; `{!! !!}` lo renderiza (usar con cuidado).
+- **Control de flujo en la vista:** `@foreach` para listas y `@forelse` para listas vacías.
+- **Layouts:** evitar repetir `<html>`, `<head>` y navegación en cada vista.
+- **Componentes:** encapsular UI reutilizable (`<x-badge-estado :estado="...">`).
+
+---
+
+## 👤 Autor
+
+**Hector Interiano**
+📚 Integración de Sistemas · Ciclo 02-2026
+🎓 UPED "Dr. Luis Alonso Aparicio" · Docente: Ing. Oscar Contreras
+
+---
+
+<p align="center">Hecho con 💙 y Laravel</p>
